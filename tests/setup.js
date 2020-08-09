@@ -5,7 +5,8 @@ const chaiLike = require('chai-like');
 require('dotenv').config({
   path: path.resolve(process.cwd(), '.env.test'),
 });
-const startApp = require('../src/shared/server/startApp');
+
+const startApp = require('../src/shared/app');
 
 global.chai = chai;
 global.expect = chai.expect;

@@ -1,7 +1,10 @@
 const bcrypt = require('bcryptjs');
 const { User } = require('../../models');
 
-const encryptPassword = (password) => bcrypt.genSalt(10).then((result) => bcrypt.hash(password, result));
+const encryptPassword = (password) => {
+  const saltRounds = 10;
+  return bcrypt.hashSync(password, saltRounds);
+};
 
 const password = async (user) => {
   const passwordHash = await encryptPassword(user.password);

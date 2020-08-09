@@ -11,7 +11,7 @@
     "test-user": "NODE_ENV=test mocha tests/setup tests/user/**/*.spec.js --User --exit",
     "db-auth:migrate": "NODE_ENV=development sequelize --options-path ./src/auth/config/sequelize.js db:migrate",
     "db-user:migrate": "NODE_ENV=development sequelize --options-path ./src/user/config/sequelize.js db:migrate",
-    "lint": "prettier --write '**/*.js' && eslint --fix '**/*.js'",
+    "lint": "eslint --fix '**/*.js'",
     "docker-login": "aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com",
     "docker-build-user-service": "docker build -f src/user/Dockerfile -t user-service:latest .",
     "docker-push-user-service": "docker tag user-service:latest 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com/user-service:latest && docker push 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com/user-service:latest",

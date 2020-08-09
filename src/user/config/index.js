@@ -6,9 +6,7 @@ if (['development', 'test'].includes(NODE_ENV)) {
     test: '.env.test',
     development: '.env',
   };
-  require('dotenv').config({
-    path: path.resolve(process.cwd(), envPath[NODE_ENV]),
-  }); //eslint-disable-line
+  require('dotenv').config({ path: path.resolve(process.cwd(), envPath[NODE_ENV]) }); //eslint-disable-line
 }
 
 const {
