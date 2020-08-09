@@ -1,0 +1,80 @@
+{
+  "name": "messi",
+  "version": "1.0.0",
+  "description": "Nodejs boilerplate",
+  "main": "src/index.js",
+  "scripts": {
+    "dev-user": "NODE_ENV=development nodemon src/shared/server/index.js User",
+    "dev-auth": "NODE_ENV=development nodemon src/shared/server/index.js Auth",
+    "start-user": "node src/shared/server/index.js User",
+    "start-auth": "node src/shared/server/index.js Auth",
+    "test-user": "NODE_ENV=test mocha tests/setup tests/user/**/*.spec.js --User --exit",
+    "db-auth:migrate": "NODE_ENV=development sequelize --options-path ./src/auth/config/sequelize.js db:migrate",
+    "db-user:migrate": "NODE_ENV=development sequelize --options-path ./src/user/config/sequelize.js db:migrate",
+    "lint": "prettier --write '**/*.js' && eslint --fix '**/*.js'",
+    "docker-login": "aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com",
+    "docker-build-user-service": "docker build -f src/user/Dockerfile -t user-service:latest .",
+    "docker-push-user-service": "docker tag user-service:latest 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com/user-service:latest && docker push 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com/user-service:latest",
+    "docker:deploy-user": "npm run docker-login; npm run docker-build-user-service; npm run docker-push-user-service",
+    "docker-build-auth": "docker build -f src/auth/Dockerfile -t 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com/auth-service:latest .",
+    "docker-run-user": "docker run -p 3000:3000 user-service:latest",
+    "docker-run-auth": "docker run -p 3001:3001 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com/auth-service",
+    "docker-push-user": "docker push 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com/user-service:latest",
+    "docker-push-auth": "docker push 621567429603.dkr.ecr.ap-southeast-1.amazonaws.com/auth-service:latest",
+    "expose": "kubectl expose deployment auth-service-deployment --type=LoadBalancer --port 80 --target-port 3001",
+    "tf-init": "cd infras; terraform init",
+    "tf-plan": "cd infras; terraform plan -var-file=development.tfvars",
+    "tf-apply": "cd infras; terraform apply -var-file=development.tfvars -auto-approve",
+    "tf-destroy": "cd infras; terraform destroy -var-file=development.tfvars -auto-approve"
+  },
+  "author": "Tien Nguyen",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nguyenminhtiend/Messi.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@godaddy/terminus": "^4.4.1",
+    "ajv": "^6.12.0",
+    "ajv-keywords": "^3.4.1",
+    "axios": "^0.19.2",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "glob": "^7.1.6",
+    "helmet": "^3.21.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
+    "ms": "^2.1.2",
+    "mysql2": "^2.1.0",
+    "query-string": "^6.11.1",
+    "sequelize": "^6.3.4",
+    "uuid": "^7.0.1",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "chai-http": "^4.3.0",
+    "chai-like": "^1.1.1",
+    "dotenv": "^8.1.0",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.4"
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}
