@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
+const cls = require('cls-hooked');
+
+const namespace = cls.createNamespace('my-namespace');
+Sequelize.useCLS(namespace);
 
 module.exports = (dirname, config) => {
   const sequelize = new Sequelize(config);

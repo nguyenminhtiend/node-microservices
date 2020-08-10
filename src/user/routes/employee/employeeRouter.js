@@ -11,10 +11,11 @@ module.exports = (app) => {
   router.get('/:id', asyncRoute(employeeController.show));
   router.post(
     '/',
+    authentication,
     validator(employeeSchema.create),
     asyncRoute(employeeController.create),
   );
   router.put('/:id', asyncRoute(employeeController.update));
 
-  app.use('/employees', authentication, router);
+  app.use('/employees', router);
 };
